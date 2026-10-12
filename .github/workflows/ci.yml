@@ -29,6 +29,9 @@ jobs:
       - name: Test
         run: bun run test:coverage
 
+      - name: Test Node runtime compatibility
+        run: node ./node_modules/vitest/vitest.mjs run
+
       - name: Upload coverage to Codecov
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v7

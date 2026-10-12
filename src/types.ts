@@ -13,7 +13,7 @@ export type ShellExpression =
   | ReadableStream;
 
 /**
- * Chainable shell command interface returned by ShellAPI.
+ * Chainable shell command interface returned by Bun's shell API.
  */
 export interface ShellChain {
   cwd(dir: string): ShellChain;

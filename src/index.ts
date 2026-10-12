@@ -66,7 +66,7 @@ const plugin: Plugin = async (input) => {
 
         // Read git trailer configuration
         const workdir = output.args?.workdir;
-        const cwd: string = (typeof workdir === 'string' ? workdir : undefined) || input.directory;
+        const cwd: string = (typeof workdir === "string" ? workdir : undefined) || input.directory;
         const trailerConfig: Record<string, string> = await readGitTrailers(input.$, cwd);
 
         if (Object.keys(trailerConfig).length === 0) {

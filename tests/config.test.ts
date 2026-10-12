@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { execSync } from "child_process";
-import { mkdtempSync, rmSync } from "fs";
+import { mkdtempSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
 import { readGitTrailers } from "../src/config.js";
@@ -8,10 +8,18 @@ import { readGitTrailers } from "../src/config.js";
 describe("readGitTrailers", () => {
   let testRepo: string;
   let mockShell: any;
+  let previousGitConfigGlobal: string | undefined;
+  let previousGitConfigSystem: string | undefined;
 
   beforeAll(() => {
     // Create a temporary git repository
     testRepo = mkdtempSync(join(tmpdir(), "git-trailers-test-"));
+    const emptyGitConfig = join(testRepo, "empty.gitconfig");
+    writeFileSync(emptyGitConfig, "");
+    previousGitConfigGlobal = process.env.GIT_CONFIG_GLOBAL;
+    previousGitConfigSystem = process.env.GIT_CONFIG_SYSTEM;
+    process.env.GIT_CONFIG_GLOBAL = emptyGitConfig;
+    process.env.GIT_CONFIG_SYSTEM = emptyGitConfig;
     execSync("git init", { cwd: testRepo });
     execSync('git config user.name "Test User"', { cwd: testRepo });
     execSync('git config user.email "test@example.com"', { cwd: testRepo });
@@ -66,6 +74,16 @@ describe("readGitTrailers", () => {
 
   afterAll(() => {
     // Clean up test repository
+    if (previousGitConfigGlobal === undefined) {
+      delete process.env.GIT_CONFIG_GLOBAL;
+    } else {
+      process.env.GIT_CONFIG_GLOBAL = previousGitConfigGlobal;
+    }
+    if (previousGitConfigSystem === undefined) {
+      delete process.env.GIT_CONFIG_SYSTEM;
+    } else {
+      process.env.GIT_CONFIG_SYSTEM = previousGitConfigSystem;
+    }
     rmSync(testRepo, { recursive: true, force: true });
   });
 

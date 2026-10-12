@@ -13,14 +13,12 @@
 
 ## Quick Start
 
-```bash
-npm install opencode-git-trailers
-```
+OpenCode installs npm plugins listed in its configuration automatically; no application-repository dependency is required.
 
 Add to your OpenCode config:
 ```json
 {
-  "plugins": ["opencode-git-trailers"]
+  "plugin": ["opencode-git-trailers"]
 }
 ```
 
@@ -46,13 +44,13 @@ Some projects require commits created with AI assistance to include metadata den
 
 ## What It Does
 
-This plugin creates a temporary git commit-msg hook that automatically appends configured trailers to commit messages using `git interpret-trailers`. The hook is installed before commits made through OpenCode and automatically cleaned up afterward. Trailers are added to the end of the commit message following the [git trailer format](https://git-scm.com/docs/git-interpret-trailers).
+This plugin creates a temporary git commit-msg hook that automatically appends configured trailers to commit messages using `git interpret-trailers`. The hook is installed before recognized commit commands made through OpenCode and automatically cleaned up afterward. Trailers are added to the end of the commit message following the [git trailer format](https://git-scm.com/docs/git-interpret-trailers).
+
+The plugin supports both Bun-based OpenCode runtimes and Node-based OpenCode Desktop runtimes. It uses OpenCode's Bun shell API when available and falls back to direct Git execution when Desktop does not provide that API.
 
 ## Installation
 
-```bash
-npm install opencode-git-trailers
-```
+Add the package to `opencode.json` instead of installing it in an application repository.
 
 ## Usage
 
@@ -62,7 +60,7 @@ Add the plugin to your OpenCode configuration:
 
 ```json
 {
-  "plugins": ["opencode-git-trailers"]
+  "plugin": ["opencode-git-trailers"]
 }
 ```
 
@@ -165,8 +163,8 @@ The plugin uses a two-step configuration system:
 **Example:**
 ```bash
 # The config key name creates the association:
-git config trailer.model.key "Model"          # ← Formats "model" as "Model"
-git config opencode.trailer.model '{{model}}'  # ← Adds trailer "model"
+git config trailer.model.key "Model"          # <- Formats "model" as "Model"
+git config opencode.trailer.model '{{model}}'  # <- Adds trailer "model"
 ```
 
 When OpenCode makes a commit, it generates: `--trailer "model:claude-4"`  
