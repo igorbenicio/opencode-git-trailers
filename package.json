@@ -14,12 +14,10 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint src/ tests/",
-    "prepublishOnly": "bun run build",
     "release": "semantic-release",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest",
-    "prepare": "husky"
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
@@ -45,12 +43,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lannuttia/opencode-git-trailers.git"
+    "url": "git+https://github.com/igorbenicio/opencode-git-trailers.git"
   },
   "author": "Anthony Lannutti <lannuttia@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/lannuttia/opencode-git-trailers#readme",
-  "bugs": "https://github.com/lannuttia/opencode-git-trailers/issues",
+  "homepage": "https://github.com/igorbenicio/opencode-git-trailers#readme",
+  "bugs": "https://github.com/igorbenicio/opencode-git-trailers/issues",
   "keywords": [
     "opencode",
     "opencode-plugin",
