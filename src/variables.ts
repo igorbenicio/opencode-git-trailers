@@ -1,23 +1,28 @@
+import { readGitCommand } from "./git-command.js";
 import type { ShellAPI, Variables } from "./types.js";
 
 /**
  * Retrieves user variables from git config.
- * @param $shell - OpenCode's shell API
+ * @param $shell - OpenCode's Bun shell API when available
  * @param cwd - Current working directory
  * @returns Variables object with user.name and user.email
  */
-export async function getUserVariables($shell: ShellAPI, cwd: string): Promise<Variables> {
-  const name: string = await $shell`git config user.name`
-    .cwd(cwd)
-    .nothrow()
-    .quiet()
-    .text();
-
-  const email: string = await $shell`git config user.email`
-    .cwd(cwd)
-    .nothrow()
-    .quiet()
-    .text();
+export async function getUserVariables(
+  $shell: ShellAPI | undefined,
+  cwd: string,
+): Promise<Variables> {
+  const name = await readGitCommand(
+    $shell,
+    cwd,
+    ["config", "--get", "user.name"],
+    (shell) => shell`git config user.name`,
+  );
+  const email = await readGitCommand(
+    $shell,
+    cwd,
+    ["config", "--get", "user.email"],
+    (shell) => shell`git config user.email`,
+  );
 
   return {
     "user.name": name.trim(),
